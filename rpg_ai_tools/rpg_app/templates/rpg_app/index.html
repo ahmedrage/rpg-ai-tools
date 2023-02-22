@@ -1,0 +1,33 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+<h1>Random Roll Table Generator</h1>
+<p> Roll table category: </p>
+<form id="myForm">
+  {% csrf_token %}
+  <input type="text" name="myInput">
+  <button type="submit">Submit</button>
+</form>
+
+<h1>Response:</h1>
+<div id="myResponse"></div>
+
+<p> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </p>
+
+<script>
+var socket = new WebSocket('ws://localhost:8000/my_consumer/');
+
+socket.onmessage = function(event) {
+  var data = JSON.parse(event.data);
+  document.getElementById('myResponse').innerHTML = data.response;
+};
+
+document.getElementById('myForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  var input = document.getElementsByName('myInput')[0].value;
+  socket.send(JSON.stringify({
+    'input': input
+  }));
+});
+</script>
+{% endblock %}
