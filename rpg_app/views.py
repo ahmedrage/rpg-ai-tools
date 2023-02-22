@@ -6,12 +6,9 @@ from django.views import generic
 from django.http import HttpResponse
 import os
 # class IndexView()
-import logging
 
 
 def index(request):
-    logger = logging.getLogger('testlogger')
-    logger.info('This is a simple log message')
     print("this is a print statement")
     port = os.environ.get('PORT', 8000)
     return render(request, 'rpg_app/index.html', {'port': port})
