@@ -1,21 +1,27 @@
 {% comment %} {% extends 'base.html' %} {% endcomment %}
 
 {% block content %}
-<h1>Random Roll Table Generator</h1>
-<p> Roll table category: </p>
-<form id="myForm">
-  {% csrf_token %}
-  <input type="text" name="myInput">
-  <button type="submit">Submit</button>
-</form>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Random Roll Table Generator</h1>
+    <p> Roll table category: </p>
+    <form id="myForm">
+      {% csrf_token %}
+      <input type="text" name="myInput">
+      <button type="submit">Submit</button>
+    </form>
 
-<h1>Response:</h1>
-<div id="myResponse"></div>
+    <h1>Response:</h1>
+    <div id="myResponse"></div>
 
-<p> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </p>
-
+    <footer> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </footer>
+  </main>
+</body>
 <script>
-var address = 'wss://' + "airpgtools.herokuapp.com" + '/my_consumer/'
+var address = 'ws://' + window.location.host + '/my_consumer/'
 console.log(address)
 var socket = new WebSocket(address);
 

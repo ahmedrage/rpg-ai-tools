@@ -27,7 +27,7 @@ class MyConsumer(WebsocketConsumer):
         }))
 
         def generate_response():
-            prompt = "Generate a dungeons and dragons random roll table of 10 items for category {0}. Make sure to come up with creative names. The list should be formatted as: n. Item name - Description - stats (if appropriate)<br>".format(user_prompt)
+            prompt = "Generate a dungeons and dragons random roll table of 10 items for category {0}. Make sure to come up with creative names. The list should be formatted as: 'n. Item name - Description - stats <br>'. Make sure to add the <br> tag.".format(user_prompt)
             api_key = os.environ.get("API_KEY")
 
             url = 'https://api.openai.com/v1/completions'
@@ -44,9 +44,10 @@ class MyConsumer(WebsocketConsumer):
 
             response = requests.post(url, headers=headers, json=data)
             print("got response")
+            print(repr(response.json()['choices'][0]['text']))
             text = response.json()['choices'][0]['text'].strip()
-            text.replace('\n', '<br>')
             print(repr(text))
+            text.replace('\n', '<br>')
             self.send(text_data= json.dumps({
                 'response': text
             }))
