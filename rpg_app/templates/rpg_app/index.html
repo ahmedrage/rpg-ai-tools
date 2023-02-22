@@ -11,11 +11,11 @@
     <form id="myForm">
       {% csrf_token %}
       <input type="text" name="myInput">
-      <button type="submit">Submit</button>
+      <button id="rollTableButton" type="submit">Submit</button>
     </form>
 
-    <h1>Response:</h1>
-    <div id="myResponse"></div>
+    <h1>Roll table:</h1>
+    <article aria-busy="false" id="myResponse"></article>
 
     <footer> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </footer>
   </main>
@@ -28,7 +28,15 @@ var socket = new WebSocket(address);
 
 socket.onmessage = function(event) {
   var data = JSON.parse(event.data);
-  document.getElementById('myResponse').innerHTML = data.response;
+
+  if (data.response) {
+    document.getElementById('myResponse').innerHTML = data.response;
+  }
+
+  document.getElementById('myResponse').setAttribute('aria-busy', data.loading);
+  document.getElementById('rollTableButton').setAttribute('aria-busy', data.loading);
+
+  
 };
 
 document.getElementById('myForm').addEventListener('submit', function(event) {

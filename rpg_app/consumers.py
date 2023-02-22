@@ -23,7 +23,7 @@ class MyConsumer(WebsocketConsumer):
         user_prompt = data['input']
         
         self.send(text_data= json.dumps({
-            'response': "Generating response ..."
+            'loading': True
         }))
 
         def generate_response():
@@ -49,7 +49,8 @@ class MyConsumer(WebsocketConsumer):
             print(repr(text))
             text.replace('\n', '<br>')
             self.send(text_data= json.dumps({
-                'response': text
+                'response': text,
+                'loading': False
             }))
 
         threading.Thread(target=generate_response).start()
