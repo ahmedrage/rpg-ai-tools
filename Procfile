@@ -1,1 +1,1 @@
-web: daphne <your_application_name>.asgi:application --port  --bind 0.0.0.0 -v2
+web: daphne rpg_app.asgi:application --port  --bind 0.0.0.0 -v2
