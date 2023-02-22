@@ -39,9 +39,10 @@ class MyConsumer(WebsocketConsumer):
                 'max_tokens': 1000
             }
 
-            response = requests.post(url, headers=headers, json=data)
+            # response = requests.post(url, headers=headers, json=data)
             print("got response")
-            text = response.json()['choices'][0]['text'].strip()
+            # text = response.json()['choices'][0]['text'].strip()
+            text = "test"
             text.replace('\n', '<br>')
             print(repr(text))
             self.send(text_data= json.dumps({
