@@ -3,10 +3,15 @@ import threading
 import requests
 import os
 
+import logging
+
+
 from channels.generic.websocket import WebsocketConsumer
 
 class MyConsumer(WebsocketConsumer):
     def connect(self):
+        logger = logging.getLogger('testlogger')
+        logger.info('This is a simple log message')
         self.accept()
 
     def disconnect(self, close_code):
