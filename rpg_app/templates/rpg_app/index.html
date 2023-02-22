@@ -15,7 +15,7 @@
 <p> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </p>
 
 <script>
-var socket = new WebSocket('ws://localhost:8000/my_consumer/');
+var socket = new WebSocket('ws://airpgtools.herokuapp.com:8000/my_consumer/');
 
 socket.onmessage = function(event) {
   var data = JSON.parse(event.data);
