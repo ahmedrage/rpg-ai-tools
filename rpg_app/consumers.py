@@ -15,11 +15,17 @@ class MyConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
+        logger = logging.getLogger('testlogger')
+        logger.info('This is a simple log message')
+
         # This method is called when the WebSocket is disconnected.
         # You can do any cleanup here.
         pass
 
     def receive(self, text_data):
+        logger = logging.getLogger('testlogger')
+        logger.info('This is a simple log message')
+
         data = json.loads(text_data)
         user_prompt = data['input']
         

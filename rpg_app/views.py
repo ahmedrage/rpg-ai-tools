@@ -4,12 +4,13 @@ from django.views import generic
 
 # Create your views here.
 from django.http import HttpResponse
-
+import os
 # class IndexView()
 
 
 def index(request):
-    return render(request, 'rpg_app/index.html')
+    port = os.environ.get('PORT', 8000)
+    return render(request, 'rpg_app/index.html', {'port': port})
 
 
 def form_submit(request):
