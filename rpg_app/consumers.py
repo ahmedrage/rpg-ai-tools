@@ -27,7 +27,7 @@ class MyConsumer(WebsocketConsumer):
         }))
 
         def generate_response():
-            prompt = "Generate a dungeons and dragons random roll table of 10 items for category {0}. Make sure to come up with creative names. Every item should be seperated with '<br>' and a number. Each items should have stats if appropriate.".format(user_prompt)
+            prompt = "Generate a dungeons and dragons random roll table of 10 items for category {0}. Make sure to come up with creative names. The list should be formatted as: n. Item name - Description - stats (if appropriate)<br>".format(user_prompt)
             api_key = os.environ.get("API_KEY")
 
             url = 'https://api.openai.com/v1/completions'
