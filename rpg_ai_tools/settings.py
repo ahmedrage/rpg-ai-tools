@@ -178,3 +178,5 @@ LOGGING = {
         }
     }
 }
+
+CSRF_TRUSTED_ORIGINS = ['https://airpgtools.com']
