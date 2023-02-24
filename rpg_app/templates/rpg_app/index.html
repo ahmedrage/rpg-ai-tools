@@ -3,48 +3,66 @@
 {% block content %}
 <head>
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+  <title> RPG AI Tools </title>
+  <div id="assistant_data" style="display: none;">{{ assistant_data|json_script }}</div>
 </head>
 <body>
   <main class="container">
-    <h1>Random Roll Table Generator</h1>
-    <p> Roll table category: </p>
-    <form id="myForm">
-      {% csrf_token %}
-      <input type="text" name="myInput">
-      <button id="rollTableButton" type="submit">Submit</button>
-    </form>
+    {%for assistant in assistant_list %}
+    <h1>{{ assistant.label }}</h1>
 
-    <h1>Roll table:</h1>
-    <article aria-busy="false" id="myResponse"></article>
+      
 
+        <form id="{{assistant.name}}">
+          {% csrf_token %}
+          {%for input in assistant.assistantinput_set.all%}
+          <label for="{{input.name}}">{{input.label}}:</label>
+          <input type={{input.input_type}} name="{{input.name}}">
+          {%endfor%}
+          <button id="{{assistant.name|add:'_button'}}" type="submit">Submit</button>
+        </form>
+
+    <h1>Result:</h1>
+    <article aria-busy="false" id="{{assistant.name|add:'_response'}}"></article>
+    {%endfor%}
     <footer> This is an early proof of concept website for this project. Please be conservative with the number of loot tables you generate. Loot tables are expensive </footer>
   </main>
 </body>
 <script>
-var address = 'wss://' + window.location.host + '/my_consumer/'
-console.log(address)
-var socket = new WebSocket(address);
 
+var assistant_json = JSON.parse(document.getElementById('assistant_data').textContent);
+var protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+var address = protocol + window.location.host + '/my_consumer/'
+var socket = new WebSocket(address);
 
 socket.onmessage = function(event) {
   var data = JSON.parse(event.data);
 
+  button = document.getElementById(data['assistant_name'] + "_button")
+  response_article = document.getElementById(data['assistant_name'] + "_response")
+
   if (data.response) {
-    document.getElementById('myResponse').innerHTML = data.response;
+    response_article.innerHTML = data.response;
+  } else {
+    response_article.innerHTML = "";
   }
-
-  document.getElementById('myResponse').setAttribute('aria-busy', data.loading);
-  document.getElementById('rollTableButton').setAttribute('aria-busy', data.loading);
-
-  
+  response_article.setAttribute('aria-busy', data.loading);
+  button.setAttribute('aria-busy', data.loading);
 };
 
-document.getElementById('myForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  var input = document.getElementsByName('myInput')[0].value;
-  socket.send(JSON.stringify({
-    'input': input
-  }));
-});
+for (const assistant_name in assistant_json) {
+  document.getElementById(assistant_name).addEventListener('submit', function(event) {
+    event.preventDefault();
+    send_json = {}
+    send_json['assistant_name'] = assistant_name
+
+    for(const input_name in assistant_json[assistant_name]) {
+      send_json[input_name] = document.getElementsByName(input_name)[0].value;
+    }
+    
+    console.log(send_json)
+    socket.send(JSON.stringify(send_json));
+  });
+}
 </script>
 {% endblock %}
