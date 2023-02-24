@@ -179,4 +179,4 @@ LOGGING = {
     }
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://airpgtools.com']
+CSRF_TRUSTED_ORIGINS = ['https://www.airpgtools.com']
