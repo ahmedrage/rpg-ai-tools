@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 # django.setup()
 
 from pathlib import Path
+import django_heroku
 # import django_heroku
 import os
 
@@ -180,3 +181,4 @@ LOGGING = {
 }
 
 CSRF_TRUSTED_ORIGINS = ['https://www.airpgtools.com']
+django_heroku.settings(locals())
